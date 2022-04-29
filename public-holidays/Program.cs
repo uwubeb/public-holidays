@@ -1,11 +1,30 @@
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.SqlServer;
+using public_holidays.Data;
+using public_holidays.Repositories;
+using public_holidays.Services;
+using public_holidays.Startup;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
-builder.Services.AddControllers();
+var services = builder.Services;
+services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+services.AddEndpointsApiExplorer();
+services.AddSwaggerGen();
+services.AddAutoMapper(typeof(Program));
+
+services.ConfigureServices();
+
+var conStrBuilder = new SqlConnectionStringBuilder(
+builder.Configuration.GetConnectionString("DefaultConnection"));
+conStrBuilder.Password = builder.Configuration["DbPassword"];
+var connection = conStrBuilder.ConnectionString;
+
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection));
+// builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 var app = builder.Build();
 
@@ -23,3 +42,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
