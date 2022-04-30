@@ -11,7 +11,10 @@ public static class ServicesConfiguration
     {
         services
             .AddScoped<ICountryRepository, CountryRepository>()
-            .AddScoped<ICountryService, CountryService>();
+            .AddScoped<ICountryService, CountryService>()
+            .AddScoped<IHolidayService, HolidayService>();
+        
+        
         services.AddRefitClient<IHolidayApi>().ConfigureHttpClient(c =>
         {
             c.BaseAddress = new Uri(configuration["HolidayApi:BaseUrl"]);

@@ -4,5 +4,5 @@ namespace public_holidays.Services;
 
 public interface IHolidayService
 {
-    public Task<IReadOnlyList<HolidaysForCountryResponse>> GetHolidaysForCountryAndYear(string countryCode, string year);
+    public Task<IReadOnlyList<HolidaysForCountryResponse>> GetHolidaysForCountryAndYearAsync(string countryCode, string year);
 }
