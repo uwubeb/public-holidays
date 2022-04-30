@@ -8,7 +8,7 @@ namespace public_holidays.Controllers;
 public class CountriesController : ControllerBase
 {
     private readonly ICountryService _countryService;
-    
+
     public CountriesController(ICountryService countryService)
     {
         _countryService = countryService;
@@ -19,5 +19,5 @@ public class CountriesController : ControllerBase
     {
        var countries = await _countryService.GetAllAsync(cancellationToken);
        return Ok(countries);
-    }
+    }   
 }

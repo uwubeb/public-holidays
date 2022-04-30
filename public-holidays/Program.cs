@@ -10,16 +10,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var services = builder.Services;
+var configuration = builder.Configuration;
 services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 services.AddAutoMapper(typeof(Program));
 
-services.ConfigureServices();
+services.ConfigureServices(configuration);
 
 var conStrBuilder = new SqlConnectionStringBuilder(
-builder.Configuration.GetConnectionString("DefaultConnection"));
+configuration.GetConnectionString("DefaultConnection"));
 conStrBuilder.Password = builder.Configuration["DbPassword"];
 var connection = conStrBuilder.ConnectionString;
 
