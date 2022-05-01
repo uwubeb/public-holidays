@@ -12,12 +12,13 @@ public class CountryService : ICountryService
 {
     private readonly ICountryRepository _countryRepository;
     // private readonly IHolidayApi  _holidayApi;
+    private readonly HolidayApiService _holidayApiService;
     private readonly IMapper _mapper;
-    public CountryService(ICountryRepository countryRepository, IMapper mapper)
+    public CountryService(ICountryRepository countryRepository, IMapper mapper, HolidayApiService holidayApiService)
     {
         _countryRepository = countryRepository;
         _mapper = mapper;
-        // _holidayApi = holidayApi;
+        _holidayApiService = holidayApiService;
     }
 
     public async Task<IReadOnlyList<SupportedCountryResponse>> GetAllAsync(CancellationToken cancellationToken = default)
@@ -31,6 +32,7 @@ public class CountryService : ICountryService
         // var countriesDto = _mapper.Map<ICollection<CountryDto>>(countries);
         // return countriesDto;
         // return await _holidayApi.GetCountriesAsync();
-        throw new NotImplementedException();
+        // }
+        return await _holidayApiService.GetSupportedCountriesAsync();
     }
 }
