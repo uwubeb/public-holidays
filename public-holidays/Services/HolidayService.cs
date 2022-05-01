@@ -5,15 +5,14 @@ namespace public_holidays.Services;
 
 public class HolidayService : IHolidayService
 {
-    private readonly IHolidayApi  _holidayApi;
-    
-    public HolidayService(IHolidayApi holidayApi)
+    // private readonly IHolidayApi  _holidayApi;
+    private readonly HolidayApiService _holidayApiService;
+    public HolidayService(HolidayApiService holidayApiService)
     {
-        _holidayApi = holidayApi;
+        _holidayApiService = holidayApiService;
     }
-
     public async Task<IReadOnlyList<HolidaysForCountryResponse>> GetHolidaysForCountryAndYearAsync(string countryCode, string year)
     {
-        return await _holidayApi.GetHolidaysForCountryAndYearAsync(countryCode, year);
+        return await _holidayApiService.GetHolidaysForCountryAndYearAsync(countryCode, year);
     }
 }

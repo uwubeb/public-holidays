@@ -5,7 +5,7 @@ namespace public_holidays.api.Responses;
 public record NameResponse
 {
     [JsonPropertyName("lang")]
-    public int Language { get; init; }
+    public string Language { get; init; }
     [JsonPropertyName("text")]
-    public int Text { get; init; }
+    public string Text { get; init; }
 }

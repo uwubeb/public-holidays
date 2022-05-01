@@ -1,23 +1,22 @@
 ﻿using public_holidays.api;
 using public_holidays.Repositories;
 using public_holidays.Services;
-using Refit;
 
 namespace public_holidays.Startup;
 
 public static class ServicesConfiguration
 {
-    public static void ConfigureServices(this IServiceCollection services, ConfigurationManager configuration)
+    public static void ConfigureServices(this IServiceCollection services)
     {
         services
             .AddScoped<ICountryRepository, CountryRepository>()
             .AddScoped<ICountryService, CountryService>()
             .AddScoped<IHolidayService, HolidayService>();
-        
-        
-        services.AddRefitClient<IHolidayApi>().ConfigureHttpClient(c =>
-        {
-            c.BaseAddress = new Uri(configuration["HolidayApi:BaseUrl"]);
-        });
+
+        services.AddHttpClient<HolidayApiService>();
+        // services.AddRefitClient<IHolidayApi>().ConfigureHttpClient(c =>
+        // {
+        //     c.BaseAddress = new Uri(configuration["HolidayApi:BaseUrl"]);
+        // });
     }
 }   

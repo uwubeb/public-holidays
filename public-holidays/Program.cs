@@ -17,14 +17,14 @@ services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 services.AddAutoMapper(typeof(Program));
 
-services.ConfigureServices(configuration);
+services.ConfigureServices();
 
 var conStrBuilder = new SqlConnectionStringBuilder(
 configuration.GetConnectionString("DefaultConnection"));
-conStrBuilder.Password = builder.Configuration["DbPassword"];
+conStrBuilder.Password = configuration["DbPassword"];
 var connection = conStrBuilder.ConnectionString;
 
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection));
+services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection));
 // builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 var app = builder.Build();

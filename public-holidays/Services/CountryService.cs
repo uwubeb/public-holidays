@@ -11,13 +11,13 @@ namespace public_holidays.Services;
 public class CountryService : ICountryService
 {
     private readonly ICountryRepository _countryRepository;
-    private readonly IHolidayApi  _holidayApi;
+    // private readonly IHolidayApi  _holidayApi;
     private readonly IMapper _mapper;
-    public CountryService(ICountryRepository countryRepository, IMapper mapper, IHolidayApi holidayApi)
+    public CountryService(ICountryRepository countryRepository, IMapper mapper)
     {
         _countryRepository = countryRepository;
         _mapper = mapper;
-        _holidayApi = holidayApi;
+        // _holidayApi = holidayApi;
     }
 
     public async Task<IReadOnlyList<SupportedCountryResponse>> GetAllAsync(CancellationToken cancellationToken = default)
@@ -30,6 +30,7 @@ public class CountryService : ICountryService
         // var countries = await JsonSerializer.DeserializeAsync<ICollection<Country>>(await streamTask, options);
         // var countriesDto = _mapper.Map<ICollection<CountryDto>>(countries);
         // return countriesDto;
-        return await _holidayApi.GetCountriesAsync();
+        // return await _holidayApi.GetCountriesAsync();
+        throw new NotImplementedException();
     }
 }
