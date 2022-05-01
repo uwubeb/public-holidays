@@ -6,5 +6,5 @@ namespace public_holidays.Services;
 
 public interface ICountryService
 {
-    public Task<IReadOnlyList<SupportedCountryResponse>> GetAllAsync(CancellationToken cancellationToken = default);
+    public Task<ICollection<CountryDto>> GetAllAsync(CancellationToken cancellationToken = default);
 }

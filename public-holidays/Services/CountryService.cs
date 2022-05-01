@@ -21,18 +21,18 @@ public class CountryService : ICountryService
         _holidayApiService = holidayApiService;
     }
 
-    public async Task<IReadOnlyList<SupportedCountryResponse>> GetAllAsync(CancellationToken cancellationToken = default)
+    public async Task<ICollection<CountryDto>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        // var streamTask = _client.GetStreamAsync("https://kayaposoft.com/enrico/json/v2.0/?action=getSupportedCountries&start=0&limit=1000");
-        // var options = new JsonSerializerOptions
-        // {
-        //     PropertyNameCaseInsensitive = true,
-        // };
-        // var countries = await JsonSerializer.DeserializeAsync<ICollection<Country>>(await streamTask, options);
-        // var countriesDto = _mapper.Map<ICollection<CountryDto>>(countries);
-        // return countriesDto;
-        // return await _holidayApi.GetCountriesAsync();
-        // }
-        return await _holidayApiService.GetSupportedCountriesAsync();
+        var countriesFromDb = await _countryRepository.GetAllAsync(cancellationToken);
+        if (countriesFromDb.Count() == 0 )
+        {
+            var countriesFromApi = await _holidayApiService.GetSupportedCountriesAsync();
+            var countriesDto = _mapper.Map<List<CountryDto>>(countriesFromApi);
+            var countriesModels = _mapper.Map<List<Country>>(countriesFromApi);
+            await _countryRepository.CreateMany(countriesModels);
+            return countriesDto;
+        }
+            
+        return  _mapper.Map<ICollection<CountryDto>>(countriesFromDb);
     }
 }

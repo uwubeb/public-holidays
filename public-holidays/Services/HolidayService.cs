@@ -12,7 +12,7 @@ public class HolidayService : IHolidayService
     {
         _holidayApiService = holidayApiService;
     }
-    public async Task<IReadOnlyList<HolidaysForCountryResponse>> GetHolidaysForCountryAndYearAsync(string countryCode, string year)
+    public async Task<ICollection<HolidaysForCountryResponse>> GetHolidaysForCountryAndYearAsync(string countryCode, string year)
     {
         return await _holidayApiService.GetHolidaysForCountryAndYearAsync(countryCode, year);
     }

@@ -7,5 +7,5 @@ public record HolidaysForCountryResponse
     [JsonPropertyName("date")]
     public DateResponse Date { get; init; }
     [JsonPropertyName("name")]
-    public IReadOnlyList<NameResponse> Names { get; init; }
+    public ICollection<NameResponse> Names { get; init; }
 }

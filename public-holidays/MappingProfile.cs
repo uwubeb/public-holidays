@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using public_holidays.api.Responses;
 using public_holidays.Data.Dtos;
 using public_holidays.Data.Models;
 
@@ -8,7 +9,14 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        CreateMap<Country, CountryDto>();
-        CreateMap<CountryDto, Country>();
+        CreateMap<Country, CountryDto>().ReverseMap();
+        CreateMap<Country, SupportedCountryResponse>().ReverseMap();
+        CreateMap<SupportedCountryResponse, CountryDto>().ReverseMap();
+        
+
+
+
+
+
     }
 }
