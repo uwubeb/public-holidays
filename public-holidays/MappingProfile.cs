@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Text.RegularExpressions;
+using AutoMapper;
 using public_holidays.api.Responses;
 using public_holidays.Data.Dtos;
 using public_holidays.Data.Models;
@@ -12,8 +13,7 @@ public class MappingProfile : Profile
         CreateMap<Country, CountryDto>().ReverseMap();
         CreateMap<Country, SupportedCountryResponse>().ReverseMap();
         CreateMap<SupportedCountryResponse, CountryDto>().ReverseMap();
-        
-
+        // CreateMap<GroupedHolidaysDto, HolidaysForCountryResponse>().ReverseMap();
 
 
 

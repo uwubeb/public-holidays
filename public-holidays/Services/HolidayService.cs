@@ -1,4 +1,5 @@
-﻿using public_holidays.api;
+﻿using AutoMapper;
+using public_holidays.api;
 using public_holidays.api.Responses;
 using public_holidays.Data.Dtos;
 
@@ -8,13 +9,23 @@ public class HolidayService : IHolidayService
 {
     // private readonly IHolidayApi  _holidayApi;
     private readonly HolidayApiService _holidayApiService;
-    public HolidayService(HolidayApiService holidayApiService)
+    private readonly IMapper _mappper;
+    public HolidayService(HolidayApiService holidayApiService, IMapper mappper)
     {
         _holidayApiService = holidayApiService;
+        _mappper = mappper;
     }
-    public async Task<ICollection<HolidaysForCountryResponse>> GetHolidaysForCountryAndYearAsync(string countryCode, string year)
+    public async Task<ICollection<GroupedHolidaysDto>> GetHolidaysForCountryAndYearAsync(string countryCode, string year)
     {
-        return await _holidayApiService.GetHolidaysForCountryAndYearAsync(countryCode, year);
+        var holidays = await _holidayApiService.GetHolidaysForCountryAndYearAsync(countryCode, year);
+        //group holidays by date and return a list of holidays for each date
+        var holidaysByDate = holidays.GroupBy(x => x.Date.Month);
+        return holidaysByDate.Select(x => new GroupedHolidaysDto()
+        {
+            Month = x.Key,
+            Holidays = _mappper.Map<List<HolidaysForCountryResponse>>(x)
+        }).ToList();
+
     }
     public async Task<DayStatusDto> GetDayStatusAsync(string countryCode,  string year, string month, string day)
     {
