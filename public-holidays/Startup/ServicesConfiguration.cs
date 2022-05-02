@@ -1,5 +1,7 @@
-﻿using public_holidays.Repositories;
+﻿using System.Text.Json.Serialization;
+using public_holidays.Repositories;
 using public_holidays.Services;
+using public_holidays.Utils;
 
 namespace public_holidays.Startup;
 
@@ -14,5 +16,10 @@ public static class ServicesConfiguration
             .AddScoped<IHolidayService, HolidayService>();
         
         services.AddHttpClient<HolidayApiService>();
+        
+        services.AddControllers().AddJsonOptions(x => {
+            x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            x.JsonSerializerOptions.Converters.Add(new CustomDateTimeConverter());
+        });
     }
 }   

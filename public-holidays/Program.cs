@@ -1,21 +1,13 @@
 using System.Text.Json.Serialization;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.SqlServer;
-using public_holidays;
-using public_holidays.Data;
-using public_holidays.Repositories;
-using public_holidays.Services;
 using public_holidays.Startup;
+using public_holidays.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var services = builder.Services;
 var configuration = builder.Configuration;
-services.AddControllers().AddJsonOptions(x => {
-    x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-});
+
 // Learn more about configuring Swagger/OpenPI at https://aka.ms/aspnetcore/swashbuckle
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
