@@ -2,6 +2,7 @@
 using public_holidays.api;
 using public_holidays.api.Responses;
 using public_holidays.Data.Dtos;
+using public_holidays.Data.Enums;
 using public_holidays.Data.Models;
 using public_holidays.Repositories;
 
@@ -43,24 +44,34 @@ public class HolidayService : IHolidayService
         return GroupHolidays(holidays);
 
     }
-    private ICollection<GroupedHolidaysDto> GroupHolidays(ICollection<Holiday> holidaysFromDb)
-    {
-        var holidaysByDate = holidaysFromDb.GroupBy(x => x.Date.Month);
-        return holidaysByDate.Select(x => new GroupedHolidaysDto()
-        {
-            Month = x.Key,
-            Holidays = _mappper.Map<List<HolidayDto>>(x)
-        }).ToList();
-    }
+  
     public async Task<DayStatusDto> GetDayStatusAsync(string countryCode,  string year, string month, string day)
     {
-        var isWorkDay = await _holidayApiService.IsWorkDayAsync(countryCode, year, month, day);
-        var isHoliday = await _holidayApiService.IsPublicHolidayAsync(countryCode, year, month, day);
+        // Not using api's isPublicHoliday or isWorkDay because it would make the api call twice
+        // while my implementation has max 1 call, or 0 if we already have the holidays in db
+        
+        var date = new DateTime(int.Parse(year), int.Parse(month), int.Parse(day));
+        
+        // this is just to make sure that we have all the holidays for the year in our db
+        // so we don't need to make repeated calls to the api and instead can use repo 
+        var _ = await GetHolidaysForCountryAndYearAsync(countryCode, year);
+        var holiday = await _holidayRepository.GetByCountryAndDateAsync(countryCode, date);
+        DayStatus status;
+        if (holiday is not null)
+        {
+            status = DayStatus.PublicHoliday;
+        }
+        else if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
+        {
+            status = DayStatus.Weekend;
+        }
+        else
+        {
+            status = DayStatus.WorkingDay;
+        }
         return new DayStatusDto
         {
-            IsPublicHoliday = isHoliday.IsPublicHoliday,
-            IsWorkday = isWorkDay.IsWorkDay,
-            isFreeDay = !isWorkDay.IsWorkDay //making an assumption that if it is not a workday, it is a free day
+           Status = status
         };
     }
     public async Task<ICollection<HolidayDto>> GetHolidaysForCountryAndYearAsync(string countryCode, string year)
@@ -98,5 +109,15 @@ public class HolidayService : IHolidayService
             }
         }
         return maxFreeDays;
+    }
+    
+    private ICollection<GroupedHolidaysDto> GroupHolidays(ICollection<Holiday> holidaysFromDb)
+    {
+        var holidaysByDate = holidaysFromDb.GroupBy(x => x.Date.Month);
+        return holidaysByDate.Select(x => new GroupedHolidaysDto()
+        {
+            Month = x.Key,
+            Holidays = _mappper.Map<List<HolidayDto>>(x)
+        }).ToList();
     }
 }

@@ -14,6 +14,11 @@ public class HolidayRepository : IHolidayRepository
     }
 
 
+    public async Task CreateAsync(Holiday holiday)
+    {
+        await _dbContext.Holidays.AddAsync(holiday);
+        await _dbContext.SaveChangesAsync();
+    }
     public async Task<ICollection<Holiday>> CreateManyAsync(ICollection<Holiday> holidays)
     {
         await _dbContext.Holidays.AddRangeAsync(holidays);
@@ -27,4 +32,15 @@ public class HolidayRepository : IHolidayRepository
             .Where(h => h.Country.CountryCode == countryCode && h.Date.Year.ToString() == year);
         return await holidays.ToListAsync();
     }
+    public async Task<Holiday?> GetByCountryAndDateAsync(string countryCode, DateTime date)
+    {
+        //get holiday by country and date
+        var holiday = await _dbContext.Holidays
+            .Where(h => h.Country.CountryCode == countryCode && h.Date == date)
+            .FirstOrDefaultAsync();
+        return holiday;
+    }
+   
+
+
 }

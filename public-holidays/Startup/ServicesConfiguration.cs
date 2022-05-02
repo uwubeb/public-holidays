@@ -14,9 +14,5 @@ public static class ServicesConfiguration
             .AddScoped<IHolidayService, HolidayService>();
         
         services.AddHttpClient<HolidayApiService>();
-        // services.AddRefitClient<IHolidayApi>().ConfigureHttpClient(c =>
-        // {
-        //     c.BaseAddress = new Uri(configuration["HolidayApi:BaseUrl"]);
-        // });
     }
 }   
