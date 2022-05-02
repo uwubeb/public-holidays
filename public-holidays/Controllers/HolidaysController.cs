@@ -28,4 +28,11 @@ public class HolidaysController : ControllerBase
         var holiday = await _holidayService.GetDayStatusAsync(countryCode, year, month, day);
         return Ok(holiday);
     }
+    
+    [HttpGet("maxFreeDays")]
+    public async Task<IActionResult> GetMaxFreeDaysForCountryAndYearAsync([FromQuery] string countryCode,[FromQuery] string year)
+    {
+        var maxFreeDays = await _holidayService.GetMaxFreeDaysForCountryAndYearAsync(countryCode, year);
+        return Ok(maxFreeDays);
+    }
 }

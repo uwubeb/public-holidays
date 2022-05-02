@@ -76,4 +76,27 @@ public class HolidayService : IHolidayService
         holidays = _mappper.Map<List<HolidayDto>>(holidaysFromApi);
         return holidays;
     }
+    
+    public async Task<int> GetMaxFreeDaysForCountryAndYearAsync(string countryCode, string year)
+    {
+        //we're making an assumption that mon-fri are workdays except for national holidays
+        var yearStart = new DateTime(int.Parse(year), 1, 1);
+        var maxFreeDays = 0;
+        var currFreeDays = 0;
+        var holidays = await GetHolidaysForCountryAndYearAsync(countryCode, year);
+        //O(1)
+        for (DateTime date = yearStart; date.Year == int.Parse(year); date = date.AddDays(1))
+        {
+            if (date.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday || holidays.Any(h => h.Date == date))
+            {
+                currFreeDays++;
+            }
+            else
+            {
+                maxFreeDays = Math.Max(maxFreeDays, currFreeDays);
+                currFreeDays = 0;
+            }
+        }
+        return maxFreeDays;
+    }
 }

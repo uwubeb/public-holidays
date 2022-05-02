@@ -15,11 +15,6 @@ public class DaysController : Controller
         
     }
     
-    [HttpGet("maxFreeDays")]
-    public async Task<IActionResult> GetMaxFreeDaysForCountryAndYearAsync([FromQuery] string countryCode,[FromQuery] string year)
-    {
-        var maxFreeDays = await _dayService.GetMaxFreeDaysAsync(countryCode, year);
-        return Ok(maxFreeDays);
-    }
+   
 
 }
