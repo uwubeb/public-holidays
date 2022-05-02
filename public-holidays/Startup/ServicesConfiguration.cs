@@ -10,9 +10,10 @@ public static class ServicesConfiguration
     {
         services
             .AddScoped<ICountryRepository, CountryRepository>()
+            .AddScoped<IHolidayRepository, HolidayRepository>()
             .AddScoped<ICountryService, CountryService>()
             .AddScoped<IHolidayService, HolidayService>();
-
+        
         services.AddHttpClient<HolidayApiService>();
         // services.AddRefitClient<IHolidayApi>().ConfigureHttpClient(c =>
         // {

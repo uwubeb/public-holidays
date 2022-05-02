@@ -15,7 +15,7 @@ public class CountryRepository : ICountryRepository
     
     public async Task<ICollection<Country>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        return await _dbContext.Countries.ToListAsync(cancellationToken);
+        return await _dbContext.Countries.Include(x => x.Holidays).ToListAsync(cancellationToken);
     }
 
     public async Task<ICollection<Country>> CreateMany(ICollection<Country> countries)

@@ -1,4 +1,6 @@
-﻿namespace public_holidays.Data.Models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace public_holidays.Data.Models;
 
 public class Holiday
 {
@@ -7,4 +9,6 @@ public class Holiday
     public string Name { get; set; }
     
     public Country Country { get; set; }
+    [ForeignKey("Country")]
+    public string CountryCode { get; set; }
 }

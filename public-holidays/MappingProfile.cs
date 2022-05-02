@@ -13,10 +13,14 @@ public class MappingProfile : Profile
         CreateMap<Country, CountryDto>().ReverseMap();
         CreateMap<Country, SupportedCountryResponse>().ReverseMap();
         CreateMap<SupportedCountryResponse, CountryDto>().ReverseMap();
-        // CreateMap<GroupedHolidaysDto, HolidaysForCountryResponse>().ReverseMap();
-
-
-
+        CreateMap<Holiday, HolidayDto>().ReverseMap();
+        CreateMap<HolidaysForCountryResponse, Holiday>()
+            .ForMember(dest => dest.Name, opt =>
+                opt.MapFrom(src => src.Names.LastOrDefault().Text))// english name
+            .ReverseMap();
+        CreateMap<DateResponse, DateTime>()
+            .ForMember(dest => dest.Date, opt =>
+                opt.MapFrom(src => new DateTime(src.Year, src.Month, src.Day)));
 
     }
 }
