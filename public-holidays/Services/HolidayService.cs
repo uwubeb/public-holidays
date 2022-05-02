@@ -18,7 +18,7 @@ public class HolidayService : IHolidayService
         _mappper = mappper;
         _holidayRepository = holidayRepository;
     }
-    public async Task<ICollection<GroupedHolidaysDto>> GetHolidaysForCountryAndYearAsync(string countryCode, string year)
+    public async Task<ICollection<GroupedHolidaysDto>> GetHolidaysForCountryAndYearGroupedAsync(string countryCode, string year)
     {
         var holidaysFromDb = await _holidayRepository.GetAllForCountryAndYearAsync(countryCode, year);
         if (holidaysFromDb.Any())
@@ -63,6 +63,17 @@ public class HolidayService : IHolidayService
             isFreeDay = !isWorkDay.IsWorkDay //making an assumption that if it is not a workday, it is a free day
         };
     }
-
-
+    public async Task<ICollection<HolidayDto>> GetHolidaysForCountryAndYearAsync(string countryCode, string year)
+    {
+        var holidaysFromDb = await _holidayRepository.GetAllForCountryAndYearAsync(countryCode, year);
+        List<HolidayDto> holidays;
+        if (holidaysFromDb.Any())
+        {
+            holidays = _mappper.Map<List<HolidayDto>>(holidaysFromDb);
+            return holidays;
+        }
+        var holidaysFromApi = await _holidayApiService.GetHolidaysForCountryAndYearAsync(countryCode, year);
+        holidays = _mappper.Map<List<HolidayDto>>(holidaysFromApi);
+        return holidays;
+    }
 }

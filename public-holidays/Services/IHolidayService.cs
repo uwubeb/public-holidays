@@ -5,8 +5,11 @@ namespace public_holidays.Services;
 
 public interface IHolidayService
 {
-    public Task<ICollection<GroupedHolidaysDto>> GetHolidaysForCountryAndYearAsync(string countryCode, string year);
+    public Task<ICollection<GroupedHolidaysDto>> GetHolidaysForCountryAndYearGroupedAsync(string countryCode, string year);
 
     public Task<DayStatusDto> GetDayStatusAsync(string countryCode, string year, string month, string day);
+    
+    public Task<ICollection<HolidayDto>> GetHolidaysForCountryAndYearAsync(string countryCode, string year);
+
     
 }

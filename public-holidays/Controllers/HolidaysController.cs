@@ -17,7 +17,7 @@ public class HolidaysController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetHolidaysForCountryAndYearAsync([FromQuery] string countryCode,[FromQuery] string year)
     {
-        var holidays = await _holidayService.GetHolidaysForCountryAndYearAsync(countryCode, year);
+        var holidays = await _holidayService.GetHolidaysForCountryAndYearGroupedAsync(countryCode, year);
         return Ok(holidays);
     }
     
