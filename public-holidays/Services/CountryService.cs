@@ -11,7 +11,6 @@ namespace public_holidays.Services;
 public class CountryService : ICountryService
 {
     private readonly ICountryRepository _countryRepository;
-    // private readonly IHolidayApi  _holidayApi;
     private readonly HolidayApiService _holidayApiService;
     private readonly IMapper _mapper;
     public CountryService(ICountryRepository countryRepository, IMapper mapper, HolidayApiService holidayApiService)

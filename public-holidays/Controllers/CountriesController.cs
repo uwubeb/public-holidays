@@ -8,12 +8,10 @@ namespace public_holidays.Controllers;
 public class CountriesController : ControllerBase
 {
     private readonly ICountryService _countryService;
-    private readonly HolidayApiService _holidayService;
 
-    public CountriesController(ICountryService countryService, HolidayApiService holidayService)
+    public CountriesController(ICountryService countryService)
     {
         _countryService = countryService;
-        _holidayService = holidayService;
     }
 
     

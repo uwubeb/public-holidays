@@ -1,5 +1,4 @@
-﻿using public_holidays.api;
-using public_holidays.Repositories;
+﻿using public_holidays.Repositories;
 using public_holidays.Services;
 
 namespace public_holidays.Startup;
