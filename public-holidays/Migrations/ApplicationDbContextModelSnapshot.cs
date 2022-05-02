@@ -43,6 +43,7 @@ namespace public_holidays.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CountryCode")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("Date")
@@ -59,19 +60,22 @@ namespace public_holidays.Migrations
                     b.ToTable("Holidays");
                 });
 
+            modelBuilder.Entity("public_holidays.Data.Models.Country", b =>
+            {
+                b.Navigation("Holidays");
+            });
             modelBuilder.Entity("public_holidays.Data.Models.Holiday", b =>
                 {
                     b.HasOne("public_holidays.Data.Models.Country", "Country")
                         .WithMany("Holidays")
-                        .HasForeignKey("CountryCode");
+                        .HasForeignKey("CountryCode")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Country");
                 });
 
-            modelBuilder.Entity("public_holidays.Data.Models.Country", b =>
-                {
-                    b.Navigation("Holidays");
-                });
+
 #pragma warning restore 612, 618
         }
     }

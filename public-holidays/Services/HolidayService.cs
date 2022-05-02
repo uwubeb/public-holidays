@@ -24,7 +24,7 @@ public class HolidayService : IHolidayService
         if (holidaysFromDb.Any())
         {
             return GroupHolidays(holidaysFromDb);
-        }
+        }   
         var holidaysFromApi = await _holidayApiService.GetHolidaysForCountryAndYearAsync(countryCode, year);
         var holidays = _mappper.Map<ICollection<Holiday>>(holidaysFromApi);
         //set holidays country codes with linq

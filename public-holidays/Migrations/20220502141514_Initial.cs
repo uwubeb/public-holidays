@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace public_holidays.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -28,7 +28,7 @@ namespace public_holidays.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CountryCode = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    CountryCode = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -37,7 +37,8 @@ namespace public_holidays.Migrations
                         name: "FK_Holidays_Countries_CountryCode",
                         column: x => x.CountryCode,
                         principalTable: "Countries",
-                        principalColumn: "CountryCode");
+                        principalColumn: "CountryCode",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

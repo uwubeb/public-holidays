@@ -18,9 +18,18 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Name, opt =>
                 opt.MapFrom(src => src.Names.LastOrDefault().Text))// english name
             .ReverseMap();
-        CreateMap<DateResponse, DateTime>()
-            .ForMember(dest => dest.Date, opt =>
-                opt.MapFrom(src => new DateTime(src.Year, src.Month, src.Day)));
+        CreateMap<DateResponse, DateTime>().ForMember(dest => dest.Date, opt =>
+        opt.MapFrom(src => new DateTime(src.Year, src.Month, src.Day)));
+        // CreateMap<DateOnly, DateResponse>()
+        //     .ForMember(dest => dest.Year, opt =>
+        //         opt.MapFrom(src => src.Year))
+        //     .ForMember(dest => dest.Month, opt =>
+        //         opt.MapFrom(src => src.Month))
+        //     .ForMember(dest => dest.Day, opt =>
+        //         opt.MapFrom(src => src.Day))
+        //     .ReverseMap();
+        // .ForMember(dest => dest, opt =>
+        //     opt.MapFrom(src => new DateOnly(src.Year, src.Month, src.Day)));
 
     }
 }

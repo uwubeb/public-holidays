@@ -12,8 +12,8 @@ using public_holidays.Data;
 namespace public_holidays.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220501101004_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20220502141514_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -45,6 +45,7 @@ namespace public_holidays.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CountryCode")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("Date")
@@ -65,7 +66,9 @@ namespace public_holidays.Migrations
                 {
                     b.HasOne("public_holidays.Data.Models.Country", "Country")
                         .WithMany("Holidays")
-                        .HasForeignKey("CountryCode");
+                        .HasForeignKey("CountryCode")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Country");
                 });

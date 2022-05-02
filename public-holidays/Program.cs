@@ -13,20 +13,12 @@ var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 var configuration = builder.Configuration;
 services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Learn more about configuring Swagger/OpenPI at https://aka.ms/aspnetcore/swashbuckle
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 services.AddAutoMapper(typeof(Program));
-
+services.ConfigureDatabase(configuration);
 services.ConfigureServices();
-
-var conStrBuilder = new SqlConnectionStringBuilder(
-configuration.GetConnectionString("DefaultConnection"));
-conStrBuilder.Password = configuration["DbPassword"];
-var connection = conStrBuilder.ConnectionString;
-
-services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection));
-// builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 var app = builder.Build();
 
