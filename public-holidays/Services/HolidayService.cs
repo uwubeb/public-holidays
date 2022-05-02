@@ -27,10 +27,11 @@ public class HolidayService : IHolidayService
         }
         var holidaysFromApi = await _holidayApiService.GetHolidaysForCountryAndYearAsync(countryCode, year);
         var holidays = _mappper.Map<ICollection<Holiday>>(holidaysFromApi);
-        //set holidays country codes with linq
+        
         holidays.ToList().ForEach(h => h.CountryCode = countryCode);
         
         //problem is that this needs countries to be already in db, because it uses their foreign keys.
+        //gonna just seed data.
         try
         {
             await _holidayRepository.CreateManyAsync(holidays);
@@ -59,7 +60,9 @@ public class HolidayService : IHolidayService
         {
             IsPublicHoliday = isHoliday.IsPublicHoliday,
             IsWorkday = isWorkDay.IsWorkDay,
-            isFreeDay = !isWorkDay.IsWorkDay && !isHoliday.IsPublicHoliday
+            isFreeDay = !isWorkDay.IsWorkDay //making an assumption that if it is not a workday, it is a free day
         };
     }
+
+
 }

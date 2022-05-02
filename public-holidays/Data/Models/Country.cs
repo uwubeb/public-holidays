@@ -9,4 +9,5 @@ public class Country
     public string Name { get; set; }
     
     public ICollection<Holiday> Holidays { get; set; }
+    public ICollection<Day> Days { get; set; }
 }

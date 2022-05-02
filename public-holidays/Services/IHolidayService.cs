@@ -8,4 +8,5 @@ public interface IHolidayService
     public Task<ICollection<GroupedHolidaysDto>> GetHolidaysForCountryAndYearAsync(string countryCode, string year);
 
     public Task<DayStatusDto> GetDayStatusAsync(string countryCode, string year, string month, string day);
+    
 }

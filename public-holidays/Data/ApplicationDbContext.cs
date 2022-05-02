@@ -15,11 +15,27 @@ public class ApplicationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Country>()
+            .HasIndex(c => c.CountryCode)
+            .IsUnique();
+        modelBuilder.Entity<Country>()
             .HasMany(c => c.Holidays)
             .WithOne(h => h.Country)
+            .HasForeignKey(h => h.Id);
+        modelBuilder.Entity<Country>()
+            .HasMany(c => c.Days)
+            .WithOne(h => h.Country)
+            .HasForeignKey(h => h.Id);
+        modelBuilder.Entity<Holiday>()
+            .HasOne(h => h.Country)
+            .WithMany(c => c.Holidays)
+            .HasForeignKey(h => h.CountryCode);
+        modelBuilder.Entity<Day>()
+            .HasOne(h => h.Country)
+            .WithMany(c => c.Days)
             .HasForeignKey(h => h.CountryCode);
     }
     
     public DbSet<Holiday> Holidays { get; set; }
     public DbSet<Country> Countries { get; set; }
+    public DbSet<Day> Days { get; set; }
 }

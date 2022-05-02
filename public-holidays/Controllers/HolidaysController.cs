@@ -22,7 +22,7 @@ public class HolidaysController : ControllerBase
     }
     
     [HttpGet("dayStatus")]
-    public async Task<IActionResult> GetDayStatusForCountryAsync([FromQuery] string countryCode,[FromQuery] string year,[FromQuery] string month,[FromQuery] string day)
+    public async Task<IActionResult> GetDayStatusForCountryDateAsync([FromQuery] string countryCode,[FromQuery] string year,[FromQuery] string month,[FromQuery] string day)
     {
         // var date = DateTime.TryParse(year, month, day, out var dateTime);
         var holiday = await _holidayService.GetDayStatusAsync(countryCode, year, month, day);
