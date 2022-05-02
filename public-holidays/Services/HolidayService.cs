@@ -24,19 +24,26 @@ public class HolidayService : IHolidayService
         if (holidaysFromDb.Any())
         {
             return GroupHolidays(holidaysFromDb);
-        }   
+        }
         var holidaysFromApi = await _holidayApiService.GetHolidaysForCountryAndYearAsync(countryCode, year);
         var holidays = _mappper.Map<ICollection<Holiday>>(holidaysFromApi);
         //set holidays country codes with linq
         holidays.ToList().ForEach(h => h.CountryCode = countryCode);
         
-        await _holidayRepository.CreateManyAsync(holidays);
+        //problem is that this needs countries to be already in db, because it uses their foreign keys.
+        try
+        {
+            await _holidayRepository.CreateManyAsync(holidays);
+        }
+        catch (Exception e)
+        {
+            //ignore for now
+        }
         return GroupHolidays(holidays);
 
     }
     private ICollection<GroupedHolidaysDto> GroupHolidays(ICollection<Holiday> holidaysFromDb)
     {
-
         var holidaysByDate = holidaysFromDb.GroupBy(x => x.Date.Month);
         return holidaysByDate.Select(x => new GroupedHolidaysDto()
         {
