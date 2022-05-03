@@ -19,11 +19,10 @@ public class HolidayRepository : IHolidayRepository
         await _dbContext.Holidays.AddAsync(holiday);
         await _dbContext.SaveChangesAsync();
     }
-    public async Task<ICollection<Holiday>> CreateManyAsync(ICollection<Holiday> holidays)
+    public async Task CreateManyAsync(ICollection<Holiday> holidays)
     {
         await _dbContext.Holidays.AddRangeAsync(holidays);
         await _dbContext.SaveChangesAsync();
-        return holidays;
     }
     public async Task<ICollection<Holiday>> GetAllForCountryAndYearAsync(string countryCode, string year)
     {

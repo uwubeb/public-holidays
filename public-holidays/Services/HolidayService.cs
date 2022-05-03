@@ -30,17 +30,6 @@ public class HolidayService : IHolidayService
         var holidays = _mappper.Map<ICollection<Holiday>>(holidaysFromApi);
         
         holidays.ToList().ForEach(h => h.CountryCode = countryCode);
-        
-        //problem is that this needs countries to be already in db, because it uses their foreign keys.
-        //gonna just seed data.
-        try
-        {
-            await _holidayRepository.CreateManyAsync(holidays);
-        }
-        catch (Exception e)
-        {
-            //ignore for now
-        }
         return GroupHolidays(holidays);
 
     }
@@ -70,27 +59,7 @@ public class HolidayService : IHolidayService
        
         return GetDayStatus(holiday, date);
     }
-    private static DayStatusDto GetDayStatus(Holiday? holiday, DateTime date)
-    {
-
-        DayStatus status;
-        if (holiday is not null)
-        {
-            status = DayStatus.PublicHoliday;
-        }
-        else if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
-        {
-            status = DayStatus.Weekend;
-        }
-        else
-        {
-            status = DayStatus.WorkingDay;
-        }
-        return new DayStatusDto
-        {
-            Status = status
-        };
-    }
+    
     public async Task<ICollection<HolidayDto>> GetHolidaysForCountryAndYearAsync(string countryCode, string year)
     {
         var holidaysFromDb = await _holidayRepository.GetAllForCountryAndYearAsync(countryCode, year);
@@ -141,5 +110,27 @@ public class HolidayService : IHolidayService
             Month = x.Key,
             Holidays = _mappper.Map<List<HolidayDto>>(x)
         }).ToList();
+    }
+    
+    private static DayStatusDto GetDayStatus(Holiday? holiday, DateTime date)
+    {
+
+        DayStatus status;
+        if (holiday is not null)
+        {
+            status = DayStatus.PublicHoliday;
+        }
+        else if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
+        {
+            status = DayStatus.Weekend;
+        }
+        else
+        {
+            status = DayStatus.WorkingDay;
+        }
+        return new DayStatusDto
+        {
+            Status = status
+        };
     }
 }

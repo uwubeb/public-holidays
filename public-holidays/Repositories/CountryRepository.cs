@@ -17,12 +17,5 @@ public class CountryRepository : ICountryRepository
     {
         return await _dbContext.Countries.Include(x => x.Holidays).ToListAsync(cancellationToken);
     }
-
-    public async Task<ICollection<Country>> CreateMany(ICollection<Country> countries)
-    {
-        await _dbContext.Countries.AddRangeAsync(countries);
-        await _dbContext.SaveChangesAsync();
-
-        return countries;
-    }
+    
 }
