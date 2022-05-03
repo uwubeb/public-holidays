@@ -23,15 +23,6 @@ public class CountryService : ICountryService
     public async Task<ICollection<CountryDto>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         var countriesFromDb = await _countryRepository.GetAllAsync(cancellationToken);
-        if (countriesFromDb.Count() == 0 )
-        {
-            var countriesFromApi = await _holidayApiService.GetSupportedCountriesAsync();
-            var countriesDto = _mapper.Map<List<CountryDto>>(countriesFromApi);
-            var countriesModels = _mapper.Map<List<Country>>(countriesFromApi);
-            await _countryRepository.CreateMany(countriesModels);
-            return countriesDto;
-        }
-            
         return  _mapper.Map<ICollection<CountryDto>>(countriesFromDb);
     }
 }

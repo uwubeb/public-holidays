@@ -39,29 +39,6 @@ namespace public_holidays.Migrations
                     b.ToTable("Countries");
                 });
 
-            modelBuilder.Entity("public_holidays.Data.Models.Day", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CountryCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsWorkDay")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CountryCode");
-
-                    b.ToTable("Days");
-                });
-
             modelBuilder.Entity("public_holidays.Data.Models.Holiday", b =>
                 {
                     b.Property<Guid>("Id")
@@ -86,17 +63,6 @@ namespace public_holidays.Migrations
                     b.ToTable("Holidays");
                 });
 
-            modelBuilder.Entity("public_holidays.Data.Models.Day", b =>
-                {
-                    b.HasOne("public_holidays.Data.Models.Country", "Country")
-                        .WithMany("Days")
-                        .HasForeignKey("CountryCode")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Country");
-                });
-
             modelBuilder.Entity("public_holidays.Data.Models.Holiday", b =>
                 {
                     b.HasOne("public_holidays.Data.Models.Country", "Country")
@@ -110,8 +76,6 @@ namespace public_holidays.Migrations
 
             modelBuilder.Entity("public_holidays.Data.Models.Country", b =>
                 {
-                    b.Navigation("Days");
-
                     b.Navigation("Holidays");
                 });
 #pragma warning restore 612, 618

@@ -13,7 +13,8 @@ public static class ServicesConfiguration
             .AddScoped<ICountryRepository, CountryRepository>()
             .AddScoped<IHolidayRepository, HolidayRepository>()
             .AddScoped<ICountryService, CountryService>()
-            .AddScoped<IHolidayService, HolidayService>();
+            .AddScoped<IHolidayService, HolidayService>()
+            .AddScoped<CountrySeeder>();
         
         services.AddHttpClient<HolidayApiService>();
         

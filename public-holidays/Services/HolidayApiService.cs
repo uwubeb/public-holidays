@@ -24,17 +24,6 @@ public class HolidayApiService
             "/enrico/json/v2.0/?action=getSupportedCountries");
     }
     
-    public async Task<IsPublicHolidayResponse> IsPublicHolidayAsync(string countryCode, string year, string month, string day)
-    {
-        return await _httpClient.GetFromJsonAsync<IsPublicHolidayResponse>(
-            "/enrico/json/v2.0/?action=isPublicHoliday&date=" + day + "-" + month + "-" + year + "&country=" + countryCode);
-    }
-
-    public async Task<IsWorkDayResponse> IsWorkDayAsync(string countryCode, string year, string month, string day)
-    {
-            return await _httpClient.GetFromJsonAsync<IsWorkDayResponse>(
-            "/enrico/json/v2.0/?action=isWorkDay&date=" + day + "-" + month + "-" + year + "&country=" + countryCode);
-    }
 
 
 }

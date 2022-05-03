@@ -25,6 +25,7 @@ public class ApplicationDbContext : DbContext
             .HasOne(h => h.Country)
             .WithMany(c => c.Holidays)
             .HasForeignKey(h => h.CountryCode);
+        
     }
     
     public DbSet<Holiday> Holidays { get; set; }

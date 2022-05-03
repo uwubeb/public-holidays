@@ -1,6 +1,4 @@
-using System.Text.Json.Serialization;
 using public_holidays.Startup;
-using public_holidays.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,8 +10,8 @@ var configuration = builder.Configuration;
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 services.AddAutoMapper(typeof(Program));
-services.ConfigureDatabase(configuration);
 services.ConfigureServices();
+services.ConfigureDatabase(configuration);
 
 var app = builder.Build();
 

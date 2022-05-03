@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace public_holidays.Migrations
 {
-    public partial class AddedDayModel : Migration
+    public partial class InitialFixed : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -19,26 +19,6 @@ namespace public_holidays.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Countries", x => x.CountryCode);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Days",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsWorkDay = table.Column<bool>(type: "bit", nullable: false),
-                    CountryCode = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Days", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Days_Countries_CountryCode",
-                        column: x => x.CountryCode,
-                        principalTable: "Countries",
-                        principalColumn: "CountryCode",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -68,11 +48,6 @@ namespace public_holidays.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Days_CountryCode",
-                table: "Days",
-                column: "CountryCode");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Holidays_CountryCode",
                 table: "Holidays",
                 column: "CountryCode");
@@ -80,9 +55,6 @@ namespace public_holidays.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Days");
-
             migrationBuilder.DropTable(
                 name: "Holidays");
 

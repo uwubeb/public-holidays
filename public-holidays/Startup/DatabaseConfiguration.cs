@@ -11,6 +11,7 @@ public static class DatabaseConfiguration
     {
         services.AddDatabase(configuration);
         services.MigrateDatabase();
+        services.SeedDatabase();
     }
     
     
@@ -29,5 +30,11 @@ public static class DatabaseConfiguration
             .BuildServiceProvider()
             .GetService<ApplicationDbContext>()?
             .Database.Migrate();
+    }
+    
+    private static void SeedDatabase(this IServiceCollection services)
+    {
+        var seeder = services.BuildServiceProvider().GetService<CountrySeeder>();
+        seeder.SeedCountriesFromApi();
     }
 }
