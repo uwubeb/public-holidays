@@ -17,8 +17,16 @@ public class CountriesController : ControllerBase
     
     [HttpGet]
     public async Task<IActionResult> GetCountriesAsync(CancellationToken cancellationToken)
-    {   
-       var countries = await _countryService.GetAllAsync(cancellationToken);
-       return Ok(countries);
+    {
+        try
+        {
+            var countries = await _countryService.GetAllAsync(cancellationToken);
+            return Ok(countries);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.Message);
+        }
+        
     }   
 }

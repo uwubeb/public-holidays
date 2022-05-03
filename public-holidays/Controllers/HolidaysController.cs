@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using public_holidays.Data.Queries;
 using public_holidays.Services;
 
 namespace public_holidays.Controllers;
@@ -8,31 +9,58 @@ namespace public_holidays.Controllers;
 public class HolidaysController : ControllerBase
 {
     private readonly IHolidayService _holidayService;
-
+    // Need proper exception handling, I think it's outside the scope.
+    private const string _errorMessage = "Something went wrong. Please try changing your query or try again later.";
     public HolidaysController(IHolidayService holidayService)
     {
         _holidayService = holidayService;
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetHolidaysForCountryAndYearAsync([FromQuery] string countryCode,[FromQuery] string year)
+    public async Task<IActionResult> GetHolidaysForCountryAndYearAsync([FromQuery] CountryYearQueryParams queryParams)
     {
-        var holidays = await _holidayService.GetHolidaysForCountryAndYearGroupedAsync(countryCode, year);
-        return Ok(holidays);
+        try
+        {
+            var holidays = await _holidayService.
+                GetHolidaysForCountryAndYearGroupedAsync(queryParams.CountryCode, queryParams.Year.ToString());
+            return Ok(holidays);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(_errorMessage);
+        }
+      
     }
     
     [HttpGet("dayStatus")]
-    public async Task<IActionResult> GetDayStatusForCountryDateAsync([FromQuery] string countryCode,[FromQuery] string year,[FromQuery] string month,[FromQuery] string day)
+    public async Task<IActionResult> GetDayStatusForCountryDateAsync([FromQuery] CountryDateQueryParams queryParams)
     {
-        // var date = DateTime.TryParse(year, month, day, out var dateTime);
-        var holiday = await _holidayService.GetDayStatusAsync(countryCode, year, month, day);
-        return Ok(holiday);
+        try
+        {
+            var holiday = await _holidayService.GetDayStatusAsync(queryParams.CountryCode,
+            queryParams.Year.ToString(), queryParams.Month.ToString(), queryParams.Day.ToString());
+            return Ok(holiday);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(_errorMessage);
+        }
+        
     }
     
     [HttpGet("maxFreeDays")]
-    public async Task<IActionResult> GetMaxFreeDaysForCountryAndYearAsync([FromQuery] string countryCode,[FromQuery] string year)
+    public async Task<IActionResult> GetMaxFreeDaysForCountryAndYearAsync([FromQuery] CountryYearQueryParams queryParams)
     {
-        var maxFreeDays = await _holidayService.GetMaxFreeDaysForCountryAndYearAsync(countryCode, year);
-        return Ok(maxFreeDays);
+        try
+        {
+            var maxFreeDays = await _holidayService.GetMaxFreeDaysForCountryAndYearAsync(queryParams.CountryCode,
+            queryParams.Year.ToString());
+            return Ok(maxFreeDays);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(_errorMessage);
+        }
+       
     }
 }
