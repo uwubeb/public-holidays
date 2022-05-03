@@ -17,7 +17,9 @@ public static class ServicesConfiguration
             .AddScoped<CountrySeeder>();
         
         services.AddHttpClient<HolidayApiService>();
-        
+
+        services.AddSwaggerDocument();
+
         services.AddControllers().AddJsonOptions(x => {
             x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             x.JsonSerializerOptions.Converters.Add(new CustomDateTimeConverter());

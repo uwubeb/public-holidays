@@ -10,12 +10,15 @@ public class HolidaysController : ControllerBase
 {
     private readonly IHolidayService _holidayService;
     // Need proper exception handling, I think it's outside the scope.
+    // Most likely exception is that the country code is not supported.
     private const string _errorMessage = "Something went wrong. Please try changing your query or try again later.";
     public HolidaysController(IHolidayService holidayService)
     {
         _holidayService = holidayService;
     }
-
+    
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [HttpGet]
     public async Task<IActionResult> GetHolidaysForCountryAndYearAsync([FromQuery] CountryYearQueryParams queryParams)
     {
@@ -31,7 +34,8 @@ public class HolidaysController : ControllerBase
         }
       
     }
-    
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [HttpGet("dayStatus")]
     public async Task<IActionResult> GetDayStatusForCountryDateAsync([FromQuery] CountryDateQueryParams queryParams)
     {
@@ -48,6 +52,8 @@ public class HolidaysController : ControllerBase
         
     }
     
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [HttpGet("maxFreeDays")]
     public async Task<IActionResult> GetMaxFreeDaysForCountryAndYearAsync([FromQuery] CountryYearQueryParams queryParams)
     {
