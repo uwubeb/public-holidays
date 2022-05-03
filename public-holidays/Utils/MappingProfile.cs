@@ -1,10 +1,9 @@
-﻿using System.Text.RegularExpressions;
-using AutoMapper;
+﻿using AutoMapper;
 using public_holidays.api.Responses;
 using public_holidays.Data.Dtos;
 using public_holidays.Data.Models;
 
-namespace public_holidays;
+namespace public_holidays.Utils;
 
 public class MappingProfile : Profile
 {

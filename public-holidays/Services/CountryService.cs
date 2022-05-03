@@ -11,13 +11,11 @@ namespace public_holidays.Services;
 public class CountryService : ICountryService
 {
     private readonly ICountryRepository _countryRepository;
-    private readonly HolidayApiService _holidayApiService;
     private readonly IMapper _mapper;
-    public CountryService(ICountryRepository countryRepository, IMapper mapper, HolidayApiService holidayApiService)
+    public CountryService(ICountryRepository countryRepository, IMapper mapper)
     {
         _countryRepository = countryRepository;
         _mapper = mapper;
-        _holidayApiService = holidayApiService;
     }
 
     public async Task<ICollection<CountryDto>> GetAllAsync(CancellationToken cancellationToken = default)

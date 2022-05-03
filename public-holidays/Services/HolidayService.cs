@@ -12,11 +12,11 @@ public class HolidayService : IHolidayService
 {
     private readonly HolidayApiService _holidayApiService;
     private readonly IHolidayRepository  _holidayRepository;
-    private readonly IMapper _mappper;
-    public HolidayService(HolidayApiService holidayApiService, IMapper mappper, IHolidayRepository holidayRepository)
+    private readonly IMapper _mapper;
+    public HolidayService(HolidayApiService holidayApiService, IMapper mapper, IHolidayRepository holidayRepository)
     {
         _holidayApiService = holidayApiService;
-        _mappper = mappper;
+        _mapper = mapper;
         _holidayRepository = holidayRepository;
     }
     public async Task<ICollection<GroupedHolidaysDto>> GetHolidaysForCountryAndYearGroupedAsync(string countryCode, string year)
@@ -27,7 +27,7 @@ public class HolidayService : IHolidayService
             return GroupHolidays(holidaysFromDb);
         }
         var holidaysFromApi = await _holidayApiService.GetHolidaysForCountryAndYearAsync(countryCode, year);
-        var holidays = _mappper.Map<ICollection<Holiday>>(holidaysFromApi);
+        var holidays = _mapper.Map<ICollection<Holiday>>(holidaysFromApi);
         
         holidays.ToList().ForEach(h => h.CountryCode = countryCode);
         return GroupHolidays(holidays);
@@ -66,14 +66,14 @@ public class HolidayService : IHolidayService
         List<HolidayDto> holidays;
         if (holidaysFromDb.Any())
         {
-            holidays = _mappper.Map<List<HolidayDto>>(holidaysFromDb);
+            holidays = _mapper.Map<List<HolidayDto>>(holidaysFromDb);
             return holidays;
         }
         var holidaysFromApi = await _holidayApiService.GetHolidaysForCountryAndYearAsync(countryCode, year);
-        var holidaysToSave = _mappper.Map<List<Holiday>>(holidaysFromApi);
+        var holidaysToSave = _mapper.Map<List<Holiday>>(holidaysFromApi);
         holidaysToSave.ForEach(h => h.CountryCode = countryCode);
         
-        holidays = _mappper.Map<List<HolidayDto>>(holidaysFromApi);
+        holidays = _mapper.Map<List<HolidayDto>>(holidaysFromApi);
         await _holidayRepository.CreateManyAsync(holidaysToSave);
 
         return holidays;
@@ -108,7 +108,7 @@ public class HolidayService : IHolidayService
         return holidaysByDate.Select(x => new GroupedHolidaysDto()
         {
             Month = x.Key,
-            Holidays = _mappper.Map<List<HolidayDto>>(x)
+            Holidays = _mapper.Map<List<HolidayDto>>(x)
         }).ToList();
     }
     
