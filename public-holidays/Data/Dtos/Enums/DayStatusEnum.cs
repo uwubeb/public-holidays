@@ -1,4 +1,4 @@
-﻿namespace public_holidays.Data.Enums;
+﻿namespace public_holidays.Data.Dtos.Enums;
 
 public enum DayStatus
 {

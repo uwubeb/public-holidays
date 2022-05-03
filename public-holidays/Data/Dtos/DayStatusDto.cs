@@ -1,4 +1,4 @@
-﻿using public_holidays.Data.Enums;
+﻿using public_holidays.Data.Dtos.Enums;
 
 namespace public_holidays.Data.Dtos;
 

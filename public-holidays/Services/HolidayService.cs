@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using public_holidays.Data.Dtos;
-using public_holidays.Data.Enums;
+using public_holidays.Data.Dtos.Enums;
 using public_holidays.Data.Models;
 using public_holidays.Repositories;
 
