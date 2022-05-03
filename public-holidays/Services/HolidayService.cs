@@ -25,6 +25,7 @@ public class HolidayService : IHolidayService
             return GroupHolidays(holidaysFromDb);
         }
         var holidaysFromApi = await _holidayApiService.GetHolidaysForCountryAndYearAsync(countryCode, year);
+        
         var holidays = _mapper.Map<ICollection<Holiday>>(holidaysFromApi);
         
         holidays.ToList().ForEach(h => h.CountryCode = countryCode);
@@ -59,24 +60,7 @@ public class HolidayService : IHolidayService
         return GetDayStatus(holiday, date);
     }
     
-    public async Task<ICollection<HolidayDto>> GetHolidaysForCountryAndYearAsync(string countryCode, string year)
-    {
-        var holidaysFromDb = await _holidayRepository.GetAllForCountryAndYearAsync(countryCode, year);
-        List<HolidayDto> holidays;
-        if (holidaysFromDb.Any())
-        {
-            holidays = _mapper.Map<List<HolidayDto>>(holidaysFromDb);
-            return holidays;
-        }
-        var holidaysFromApi = await _holidayApiService.GetHolidaysForCountryAndYearAsync(countryCode, year);
-        var holidaysToSave = _mapper.Map<List<Holiday>>(holidaysFromApi);
-        holidaysToSave.ForEach(h => h.CountryCode = countryCode);
-        
-        holidays = _mapper.Map<List<HolidayDto>>(holidaysFromApi);
-        await _holidayRepository.CreateManyAsync(holidaysToSave);
-
-        return holidays;
-    }
+    
     
     public async Task<int> GetMaxFreeDaysForCountryAndYearAsync(string countryCode, string year)
     {
@@ -99,6 +83,23 @@ public class HolidayService : IHolidayService
             }
         }
         return maxFreeDays;
+    }
+    private async Task<ICollection<HolidayDto>> GetHolidaysForCountryAndYearAsync(string countryCode, string year)
+    {
+        var holidaysFromDb = await _holidayRepository.GetAllForCountryAndYearAsync(countryCode, year);
+        List<HolidayDto> holidays;
+        if (holidaysFromDb.Any())
+        {
+            return _mapper.Map<List<HolidayDto>>(holidaysFromDb);
+        }
+        var holidaysFromApi = await _holidayApiService.GetHolidaysForCountryAndYearAsync(countryCode, year);
+        var holidaysToSave = _mapper.Map<List<Holiday>>(holidaysFromApi);
+        holidaysToSave.ForEach(h => h.CountryCode = countryCode);
+        
+        holidays = _mapper.Map<List<HolidayDto>>(holidaysFromApi);
+        await _holidayRepository.CreateManyAsync(holidaysToSave);
+
+        return holidays;
     }
     
     private ICollection<GroupedHolidaysDto> GroupHolidays(ICollection<Holiday> holidaysFromDb)
