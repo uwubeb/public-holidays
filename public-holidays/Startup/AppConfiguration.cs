@@ -6,7 +6,6 @@ public static class AppConfiguration
     {
        app.UseOpenApi();
        app.UseHttpsRedirection();
-       app.UseAuthorization();
        app.MapControllers();
     }
 }
