@@ -1,4 +1,4 @@
-﻿using public_holidays.api.Responses;
+﻿using public_holidays.Data.Responses;
 
 namespace public_holidays.Services;
 

@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace public_holidays.api.Responses;
+namespace public_holidays.Data.Responses;
 
 public record IsPublicHolidayResponse
 {

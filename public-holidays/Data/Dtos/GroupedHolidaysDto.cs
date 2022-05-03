@@ -1,6 +1,4 @@
-﻿using public_holidays.api.Responses;
-
-namespace public_holidays.Data.Dtos;
+﻿namespace public_holidays.Data.Dtos;
 
 public class GroupedHolidaysDto
 {
