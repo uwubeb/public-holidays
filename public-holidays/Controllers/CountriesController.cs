@@ -18,7 +18,7 @@ public class CountriesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [HttpGet]
-    public async Task<IActionResult> GetCountriesAsync(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetSupportedCountriesAsync(CancellationToken cancellationToken)
     {
         try
         {
