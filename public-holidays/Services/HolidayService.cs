@@ -54,8 +54,25 @@ public class HolidayService : IHolidayService
         
         // this is just to make sure that we have all the holidays for the year in our db
         // so we don't need to make repeated calls to the api and instead can use repo 
-        var _ = await GetHolidaysForCountryAndYearAsync(countryCode, year);
-        var holiday = await _holidayRepository.GetByCountryAndDateAsync(countryCode, date);
+        var holidays = await _holidayRepository.GetAllForCountryAndYearAsync(countryCode, year);
+        Holiday? holiday = null;
+        
+        if (!holidays.Any())
+        {
+            // make sure all holidays for the year are in db so we can use that.
+            var _ = await GetHolidaysForCountryAndYearAsync(countryCode, year);
+            holiday = await _holidayRepository.GetByCountryAndDateAsync(countryCode, date);
+        }
+        else
+        {
+            holiday = holidays.FirstOrDefault(h => h.Date.Date == date.Date);
+        }
+       
+        return GetDayStatus(holiday, date);
+    }
+    private static DayStatusDto GetDayStatus(Holiday? holiday, DateTime date)
+    {
+
         DayStatus status;
         if (holiday is not null)
         {
@@ -71,7 +88,7 @@ public class HolidayService : IHolidayService
         }
         return new DayStatusDto
         {
-           Status = status
+            Status = status
         };
     }
     public async Task<ICollection<HolidayDto>> GetHolidaysForCountryAndYearAsync(string countryCode, string year)
@@ -84,7 +101,12 @@ public class HolidayService : IHolidayService
             return holidays;
         }
         var holidaysFromApi = await _holidayApiService.GetHolidaysForCountryAndYearAsync(countryCode, year);
+        var holidaysToSave = _mappper.Map<List<Holiday>>(holidaysFromApi);
+        holidaysToSave.ForEach(h => h.CountryCode = countryCode);
+        
         holidays = _mappper.Map<List<HolidayDto>>(holidaysFromApi);
+        await _holidayRepository.CreateManyAsync(holidaysToSave);
+
         return holidays;
     }
     
