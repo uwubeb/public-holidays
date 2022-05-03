@@ -28,6 +28,7 @@ public class HolidayService : IHolidayService
         var holidays = _mapper.Map<ICollection<Holiday>>(holidaysFromApi);
         
         holidays.ToList().ForEach(h => h.CountryCode = countryCode);
+        await _holidayRepository.CreateManyAsync(holidays);
         return GroupHolidays(holidays);
 
     }
