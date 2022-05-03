@@ -17,8 +17,13 @@ public static class ServicesConfiguration
             .AddScoped<CountrySeeder>();
         
         services.AddHttpClient<HolidayApiService>();
-
+        
+        services.AddSwaggerGen();
         services.AddSwaggerDocument();
+
+        services.AddAutoMapper(typeof(Program));
+        
+        
 
         services.AddControllers().AddJsonOptions(x => {
             x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
