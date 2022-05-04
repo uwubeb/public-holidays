@@ -1,0 +1,12 @@
+version: '3.4'
+
+services:
+  public-holidays:
+    image: ${DOCKER_REGISTRY-}publicholidays
+    build:
+      context: .
+      dockerfile: public-holidays/Dockerfile
+    environment:
+      DB_Password: ${DB_Password}
+      DB_User: ${DB_User}
+      DB_Server: ${DB_Server}

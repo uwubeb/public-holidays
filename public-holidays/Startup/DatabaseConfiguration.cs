@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using System.Text;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using public_holidays.Data;
 
@@ -17,12 +18,16 @@ public static class DatabaseConfiguration
     
     private static void AddDatabase(this IServiceCollection services, IConfiguration configuration)
     {
-        var conStrBuilder = new SqlConnectionStringBuilder(
-        configuration.GetConnectionString("DefaultConnection"));
+        var conStrBuilder = new StringBuilder(
+        configuration["ConnectionStrings:HolidayConnectionMssql"]);
         // conStrBuilder.Password = configuration["DbPassword"];
-        var connection = conStrBuilder.ConnectionString;
+        string conn = conStrBuilder
+            .Replace("ENVID", configuration["DB_User"])
+            .Replace("ENVPW", configuration["DB_Password"])
+            .Replace("ENVSERVER", configuration["DB_Server"])
+            .ToString();
 
-        services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection));
+        services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(conn));
     }
     private static void MigrateDatabase(this IServiceCollection services)
     {
