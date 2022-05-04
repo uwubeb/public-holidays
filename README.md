@@ -13,7 +13,6 @@ DB_Server="tcp:public-holidays.database.windows.net,1433"
 ```
 3. Optionally, replace port **8081** with your preffered port to access the application in docker.compose.override.yml.
 4. Run `docker compose up`.
-5. 
 ## To deploy from Docker image:
 You can deploy the docker image anywhere that supports Docker Engine. For this example we'll be using an Azure Container Instance.
 1. Create new container instance.
