@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   public-holidays:
-    image: ${DOCKER_REGISTRY-}publicholidays
+    image: aruzam/publicholidays:latest
     build:
       context: .
       dockerfile: public-holidays/Dockerfile
