@@ -19,7 +19,7 @@ public static class DatabaseConfiguration
     {
         var conStrBuilder = new SqlConnectionStringBuilder(
         configuration.GetConnectionString("DefaultConnection"));
-        conStrBuilder.Password = configuration["DbPassword"];
+        // conStrBuilder.Password = configuration["DbPassword"];
         var connection = conStrBuilder.ConnectionString;
 
         services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection));
