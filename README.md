@@ -24,7 +24,8 @@ You can deploy the docker image anywhere that supports Docker Engine. For this e
 You can run the application locally, using a local MSSQL database or a MSSQL server.
 1. Clone the repository.
 2. Set the connection string in `./public-holidays/appsettings.Development.json`.
-3. Run `dotnet run ./public-holidays` from the root directory.
+3. Run command `cd ./public-holidays`
+4. Run `dotnet run` from the public-holidays directory.
 ## Endpoints
 1. `GET /api/countries` returns a JSON list of supported countries and their country codes. Use the country codes for other endpoints.
 2. `GET /api/holidays?countryCode=LTU&year=2022` accepts country code and year from 2011 to 9999. Returns JSON list of public holidays grouped by month.
